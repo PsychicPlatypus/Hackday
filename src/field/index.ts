@@ -30,8 +30,8 @@ class Field {
     }
 
     update(figure: Array<ICoordinate>) {
-        figure.forEach((key, _) => {
-            this.state.set(key, true);
+        figure.forEach((coord) => {
+            this.state.set(coord, true);
         });
     }
 }

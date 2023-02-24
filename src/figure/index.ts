@@ -14,18 +14,30 @@ class Figure {
     move(direction: EDirection) {
         switch (direction) {
             case EDirection.DOWN:
+                if (this.checkCollision()) {
+                    this.field.update(this.coordinates);
+                    return;
+                }
                 this.coordinates.forEach((coord) => {
                     coord.y = coord.y - 1;
                 });
                 break;
 
             case EDirection.LEFT:
+                if (this.checkCollision()) {
+                    this.field.update(this.coordinates);
+                    return;
+                }
                 this.coordinates.forEach((coord) => {
                     coord.x = coord.x - 1;
                 });
                 break;
 
             case EDirection.RIGHT:
+                if (this.checkCollision()) {
+                    this.field.update(this.coordinates);
+                    return;
+                }
                 this.coordinates.forEach((coord) => {
                     coord.x = coord.x + 1;
                 });
@@ -53,7 +65,6 @@ class Figure {
         );
 
         const res = underPosition.some((coord) => {
-            console.log(coord, this.field.state.get(coord));
             return this.field.state.get(coord);
         });
 
