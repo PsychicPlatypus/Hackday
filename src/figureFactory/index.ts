@@ -13,5 +13,5 @@ export function createSquare(field: Field) {
         { x: startingXCoordinate, y: largestYCoordinate - 1 },
         { x: startingXCoordinate + 1, y: largestYCoordinate - 1 },
     ];
-    return new Figure(coordinates);
+    return new Figure(coordinates, field);
 }

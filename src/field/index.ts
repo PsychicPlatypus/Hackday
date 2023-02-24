@@ -1,5 +1,18 @@
 import ICoordinate from "../coordinate";
 
+const originalGet = Map.prototype.get;
+const originalSet = Map.prototype.set;
+
+Map.prototype.get = function (obj) {
+    const serialized = JSON.stringify(obj);
+    return originalGet.call(this, serialized);
+};
+
+Map.prototype.set = function (obj, val) {
+    const serialized = JSON.stringify(obj);
+    return originalSet.call(this, serialized, val);
+};
+
 class Field {
     state: Map<ICoordinate, Boolean>;
 
