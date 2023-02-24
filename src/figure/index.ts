@@ -33,6 +33,14 @@ class Figure {
         }
         return this.coordinates;
     }
+
+    checkCollision(field: Array<ICoordinate>) {
+        return this.coordinates.some((coord) => {
+            return field.some((fieldCoord) => {
+                return fieldCoord.x === coord.x && fieldCoord.y === coord.y;
+            });
+        });
+    }
 }
 
 export default Figure;
