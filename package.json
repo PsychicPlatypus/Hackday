@@ -1,0 +1,31 @@
+{
+    "name": "hackday",
+    "version": "1.0.0",
+    "description": "Typescript Tetris implementation",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest --coverage",
+        "start": "node src/index.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PsychicPlatypus/Hackday.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/PsychicPlatypus/Hackday/issues"
+    },
+    "homepage": "https://github.com/PsychicPlatypus/Hackday#readme",
+    "devDependencies": {
+        "@babel/preset-typescript": "^7.21.0",
+        "@jest/globals": "^29.4.3",
+        "@types/jest": "^29.4.0",
+        "@types/node": "^18.14.1",
+        "ts-jest": "^29.0.5",
+        "ts-node": "^10.9.1",
+        "tslib": "^2.5.0",
+        "typescript": "^4.9.5"
+    }
+}
