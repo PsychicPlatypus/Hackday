@@ -31,3 +31,16 @@ it("should set the figure when it reaches bottom", () => {
     expect(gameLoop.figure).toEqual(null);
     expect(currentField.state.map).not.toEqual(gameLoop.field.state.map); // Field was changed
 });
+
+it("should set the figure when it collides with another", () => {
+    const field = new Field(5, 20);
+    field.update([{ x: 0, y: 0 }]);
+    const gameLoop = new GameLoop(field);
+    const figure = new Figure([{ x: 0, y: 1 }], field);
+    const currentField = gameLoop.field;
+
+    gameLoop.figure = figure;
+    gameLoop.step();
+    expect(gameLoop.figure).toEqual(null);
+    expect(currentField.state.map).not.toEqual(gameLoop.field.state.map); // Field was changed
+});
