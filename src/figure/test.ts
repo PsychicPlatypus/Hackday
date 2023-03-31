@@ -276,6 +276,28 @@ describe("Figure class", () => {
         figure.move(EDirection.RIGHT);
         expect(figure.coordinates).toEqual(figureCoordinates);
     });
+
+    it("should not allow leftwards movement when the figure is at border", () => {
+        const figureCoordinates: Array<ICoordinate> = [{ x: 0, y: 20 }];
+        const testField = new Field(5, 20);
+
+        const figure = new Figure(figureCoordinates, testField);
+
+        figure.move(EDirection.LEFT);
+        expect(figure.coordinates).toEqual(figureCoordinates);
+    });
+
+    it("should not allow leftwards movement when the figure is at border", () => {
+        const figureCoordinates: Array<ICoordinate> = [{ x: 0, y: 0 }];
+        const testField = new Field(5, 20);
+        const testFieldStateCopy = new Map(testField.state.map);
+
+        const figure = new Figure(figureCoordinates, testField);
+
+        figure.move(EDirection.DOWN);
+        expect(figure.coordinates).toEqual(figureCoordinates);
+        expect(testField.state.map).not.toEqual(testFieldStateCopy); // Field was changed
+    });
 });
 
 describe("Coordinate interface", () => {
