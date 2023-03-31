@@ -91,66 +91,63 @@ describe("Figure class", () => {
         );
     });
 
-    // it("should update field or figure if there is collision", () => {
-    //     const collisionCoordinates: Array<ICoordinate> = [
-    //         { x: 2, y: 15 },
-    //         { x: 3, y: 15 },
-    //     ];
+    it("should update field or figure if there is collision", () => {
+        const collisionCoordinates: Array<ICoordinate> = [
+            { x: 2, y: 15 },
+            { x: 3, y: 15 },
+        ];
 
-    //     [
-    //         { xShift: -2, isCollisionExpected: false },
-    //         // { xShift: -1, isCollisionExpected: true },
-    //         // { xShift: 0, isCollisionExpected: true },
-    //         // { xShift: 1, isCollisionExpected: true },
-    //         // { xShift: 2, isCollisionExpected: false },
-    //     ].forEach(
-    //         ({ xShift: xShift, isCollisionExpected: isCollisionExpected }) => {
-    //             const testField = new Field(5, 20);
-    //             testField.update(collisionCoordinates);
-    //             const testFieldStateCopy = new Map(testField.state.map);
+        [
+            { xShift: -2, isCollisionExpected: false },
+            { xShift: -1, isCollisionExpected: true },
+            { xShift: 0, isCollisionExpected: true },
+            { xShift: 1, isCollisionExpected: true },
+            { xShift: 2, isCollisionExpected: false },
+        ].forEach(
+            ({ xShift: xShift, isCollisionExpected: isCollisionExpected }) => {
+                const testField = new Field(5, 20);
+                testField.update(collisionCoordinates);
+                const testFieldStateCopy = new Map(testField.state.map);
 
-    //             const figurePlacementCoordinates = collisionCoordinates.map(
-    //                 (coordinates) => ({
-    //                     x: coordinates.x + xShift,
-    //                     y: coordinates.y + 1,
-    //                 })
-    //             );
+                const figurePlacementCoordinates = collisionCoordinates.map(
+                    (coordinates) => ({
+                        x: coordinates.x + xShift,
+                        y: coordinates.y + 1,
+                    })
+                );
 
-    //             const figure = new Figure(
-    //                 figurePlacementCoordinates,
-    //                 testField
-    //             );
+                const figure = new Figure(
+                    figurePlacementCoordinates,
+                    testField
+                );
 
-    //             figure.move(EDirection.DOWN);
+                const expectedUpdatedFigureCoordinates =
+                    figurePlacementCoordinates.map((coordinate) => ({
+                        x: coordinate.x,
+                        y: coordinate.y - 1,
+                    }));
 
-    //             if (isCollisionExpected) {
-    //                 const expectedUpdatedFigureCoordinates =
-    //                     figurePlacementCoordinates.map((coordinate) => ({
-    //                         x: coordinate.x,
-    //                         y: coordinate.y - 1,
-    //                     }));
-    //                 expect(figure.coordinates).toEqual(
-    //                     expectedUpdatedFigureCoordinates
-    //                 );
-    //                 expect(testField).toEqual(testFieldStateCopy);
-    //             } else {
-    //                 expect(testField).not.toEqual(testFieldStateCopy);
+                figure.move(EDirection.DOWN);
 
-    //                 figurePlacementCoordinates.forEach((coordinate) => {
-    //                     console.log(
-    //                         coordinate,
-    //                         testField.state.get(coordinate)
-    //                     );
-    //                     expect(testField.state.get(coordinate)).toEqual(true);
-    //                 });
+                if (isCollisionExpected) {
+                    expect(testField.state.map).not.toEqual(testFieldStateCopy); // field WAS changed
 
-    //                 expect(figure.coordinates).toEqual(
-    //                     figurePlacementCoordinates
-    //                 );
-    //             }
-    //         }
-    //     );
-    // });
+                    figurePlacementCoordinates.forEach((coordinate) => {
+                        expect(testField.state.get(coordinate)).toEqual(true);
+                    });
+
+                    expect(figure.coordinates).toEqual(
+                        figurePlacementCoordinates
+                    );
+                } else {
+                    expect(figure.coordinates).toEqual(
+                        expectedUpdatedFigureCoordinates
+                    );
+                    expect(testField.state.map).toEqual(testFieldStateCopy); // field wasn't changed = no collision
+                }
+            }
+        );
+    });
 });
 
 describe("Coordinate interface", () => {

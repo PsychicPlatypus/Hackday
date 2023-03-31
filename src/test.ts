@@ -6,28 +6,6 @@ describe("test describe", () => {
     });
 });
 
-// import { Ingredient } from "../../../src/db/models";
-// import * as ingredientDal from "../../../src/db/dal/ingredient";
-
-// const dbTeardown = async () => {
-//     await Ingredient.sequelize?.query("SET FOREIGN_KEY_CHECKS = 0");
-//     await Ingredient.truncate({ force: true });
-//     await Ingredient.sequelize?.query("SET FOREIGN_KEY_CHECKS = 1");
-// };
-
-// describe("Ingredient DAL", () => {
-//     let ingredientId: number;
-//     beforeAll(async () => {
-//         await dbTeardown();
-//         ({ id: ingredientId } = await Ingredient.create({
-//             name: "Beans",
-//             slug: "beans",
-//         }));
-//     });
-//     afterAll(async () => {
-//         await dbTeardown();
-//     });
-
 //     describe("Create method", () => {
 //         it("should create and return an object of ingredient details", async () => {
 //             const payload = {
