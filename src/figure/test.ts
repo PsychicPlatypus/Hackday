@@ -210,6 +210,64 @@ describe("Figure class", () => {
     });
 
     it("should update field or figure if there is collision leftwards", () => {
+        const collisionCoordinates: Array<ICoordinate> = [
+            { x: 3, y: 15 },
+            { x: 3, y: 14 },
+        ];
+
+        [
+            { yShift: 2, isCollisionExpected: false },
+            { yShift: 1, isCollisionExpected: true },
+            { yShift: 0, isCollisionExpected: true },
+            { yShift: -1, isCollisionExpected: true },
+            { yShift: -2, isCollisionExpected: false },
+        ].forEach(
+            ({ yShift: yShift, isCollisionExpected: isCollisionExpected }) => {
+                const testField = new Field(5, 20);
+                testField.update(collisionCoordinates);
+                const testFieldStateCopy = new Map(testField.state.map);
+
+                const figurePlacementCoordinates = collisionCoordinates.map(
+                    (coordinates) => ({
+                        x: coordinates.x + 1,
+                        y: coordinates.y + yShift,
+                    })
+                );
+
+                const figure = new Figure(
+                    figurePlacementCoordinates,
+                    testField
+                );
+
+                const expectedUpdatedFigureCoordinates =
+                    figurePlacementCoordinates.map((coordinate) => ({
+                        x: coordinate.x - 1,
+                        y: coordinate.y,
+                    }));
+
+                figure.move(EDirection.LEFT);
+
+                if (isCollisionExpected) {
+                    expect(testField.state.map).not.toEqual(testFieldStateCopy); // field WAS changed
+
+                    figurePlacementCoordinates.forEach((coordinate) => {
+                        expect(testField.state.get(coordinate)).toEqual(true);
+                    });
+
+                    expect(figure.coordinates).toEqual(
+                        figurePlacementCoordinates
+                    );
+                } else {
+                    expect(figure.coordinates).toEqual(
+                        expectedUpdatedFigureCoordinates
+                    );
+                    expect(testField.state.map).toEqual(testFieldStateCopy); // field wasn't changed = no collision
+                }
+            }
+        );
+    });
+
+    it("should not allow rightwards movement when the figure is at border", () => {
         const figureCoordinates: Array<ICoordinate> = [{ x: 5, y: 20 }];
         const testField = new Field(5, 20);
 
@@ -218,8 +276,6 @@ describe("Figure class", () => {
         figure.move(EDirection.RIGHT);
         expect(figure.coordinates).toEqual(figureCoordinates);
     });
-
-    it("should not allow rightwards movement when the figure is next to a border", () => {});
 });
 
 describe("Coordinate interface", () => {
