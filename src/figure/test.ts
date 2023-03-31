@@ -287,7 +287,7 @@ describe("Figure class", () => {
         expect(figure.coordinates).toEqual(figureCoordinates);
     });
 
-    it("should not allow leftwards movement when the figure is at border", () => {
+    it("should not allow downwards movement when the figure is at border", () => {
         const figureCoordinates: Array<ICoordinate> = [{ x: 0, y: 0 }];
         const testField = new Field(5, 20);
         const testFieldStateCopy = new Map(testField.state.map);
