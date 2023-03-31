@@ -35,6 +35,7 @@ class Figure {
 
             case EDirection.RIGHT:
                 if (this.checkCollision()) {
+                    console.log("Here");
                     this.field.update(this.coordinates);
                     return;
                 }
@@ -48,14 +49,6 @@ class Figure {
         }
         return this.coordinates;
     }
-
-    // checkCollision(field: Field) {
-    //     return this.coordinates.some((coord) => {
-    //         return field.state.some((fieldCoord) => {
-    //             return fieldCoord.x === coord.x && fieldCoord.y === coord.y;
-    //         });
-    //     });
-    // }
 
     checkCollision() {
         const underPosition: Array<ICoordinate> = this.coordinates.map(

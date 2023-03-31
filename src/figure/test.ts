@@ -91,7 +91,65 @@ describe("Figure class", () => {
         );
     });
 
-    it("should update field or figure if there is collision", () => {
+    it("should update field or figure if there is collision rightwards", () => {
+        const collisionCoordinates: Array<ICoordinate> = [
+            { x: 3, y: 15 },
+            { x: 3, y: 14 },
+        ];
+
+        [
+            { yShift: 2, isCollisionExpected: false },
+            { yShift: 1, isCollisionExpected: true },
+            // { yShift: 0, isCollisionExpected: true },
+            // { yShift: -1, isCollisionExpected: true },
+            // { yShift: -2, isCollisionExpected: false },
+        ].forEach(
+            ({ yShift: yShift, isCollisionExpected: isCollisionExpected }) => {
+                const testField = new Field(5, 20);
+                testField.update(collisionCoordinates);
+                const testFieldStateCopy = new Map(testField.state.map);
+
+                const figurePlacementCoordinates = collisionCoordinates.map(
+                    (coordinates) => ({
+                        x: coordinates.x - 1,
+                        y: coordinates.y + yShift,
+                    })
+                );
+
+                const figure = new Figure(
+                    figurePlacementCoordinates,
+                    testField
+                );
+
+                const expectedUpdatedFigureCoordinates =
+                    figurePlacementCoordinates.map((coordinate) => ({
+                        x: coordinate.x + 1,
+                        y: coordinate.y,
+                    }));
+
+                figure.move(EDirection.RIGHT);
+
+                if (isCollisionExpected) {
+                    expect(testField.state.map).not.toEqual(testFieldStateCopy); // field WAS changed
+
+                    figurePlacementCoordinates.forEach((coordinate) => {
+                        expect(testField.state.get(coordinate)).toEqual(true);
+                    });
+
+                    expect(figure.coordinates).toEqual(
+                        figurePlacementCoordinates
+                    );
+                } else {
+                    expect(figure.coordinates).toEqual(
+                        expectedUpdatedFigureCoordinates
+                    );
+                    expect(testField.state.map).toEqual(testFieldStateCopy); // field wasn't changed = no collision
+                }
+            }
+        );
+    });
+
+    it("should update field or figure if there is collision downwards", () => {
         const collisionCoordinates: Array<ICoordinate> = [
             { x: 2, y: 15 },
             { x: 3, y: 15 },
