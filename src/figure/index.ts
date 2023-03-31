@@ -14,36 +14,63 @@ class Figure {
     move(direction: EDirection) {
         switch (direction) {
             case EDirection.DOWN: {
-                if (this.checkCollision(EDirection.DOWN)) {
+                const updatedCoordinates = this.coordinates.map(
+                    ({ x: x, y: y }) => ({ x: x, y: y - 1 })
+                );
+
+                if (
+                    this.checkFieldBorderCollision(
+                        EDirection.DOWN,
+                        updatedCoordinates
+                    )
+                ) {
+                    return this.coordinates;
+                } else if (this.checkCollision(EDirection.DOWN)) {
                     this.field.update(this.coordinates);
                 } else {
-                    this.coordinates = this.coordinates.map(
-                        ({ x: x, y: y }) => ({ x: x, y: y - 1 })
-                    );
+                    this.coordinates = updatedCoordinates;
                 }
 
                 return this.coordinates;
             }
 
             case EDirection.LEFT: {
-                if (this.checkCollision(EDirection.LEFT)) {
+                const updatedCoordinates = this.coordinates.map(
+                    ({ x: x, y: y }) => ({ x: x - 1, y: y })
+                );
+
+                if (
+                    this.checkFieldBorderCollision(
+                        EDirection.LEFT,
+                        updatedCoordinates
+                    )
+                ) {
+                    return this.coordinates;
+                } else if (this.checkCollision(EDirection.LEFT)) {
                     this.field.update(this.coordinates);
                 } else {
-                    this.coordinates = this.coordinates.map(
-                        ({ x: x, y: y }) => ({ x: x - 1, y: y })
-                    );
+                    this.coordinates = updatedCoordinates;
                 }
 
                 return this.coordinates;
             }
 
             case EDirection.RIGHT: {
-                if (this.checkCollision(EDirection.RIGHT)) {
+                const updatedCoordinates = this.coordinates.map(
+                    ({ x: x, y: y }) => ({ x: x + 1, y: y })
+                );
+
+                if (
+                    this.checkFieldBorderCollision(
+                        EDirection.RIGHT,
+                        updatedCoordinates
+                    )
+                ) {
+                    return this.coordinates;
+                } else if (this.checkCollision(EDirection.RIGHT)) {
                     this.field.update(this.coordinates);
                 } else {
-                    this.coordinates = this.coordinates.map(
-                        ({ x: x, y: y }) => ({ x: x + 1, y: y })
-                    );
+                    this.coordinates = updatedCoordinates;
                 }
 
                 return this.coordinates;
@@ -53,9 +80,12 @@ class Figure {
 
     checkCollision(direction: EDirection) {
         let targetPosition: Array<ICoordinate> = this.coordinates;
+        let fieldBorderCollisionFound = false;
 
         switch (direction) {
             case EDirection.DOWN: {
+                this.field;
+
                 targetPosition = this.coordinates.map((coord) => ({
                     x: coord.x,
                     y: coord.y - 1,
@@ -83,7 +113,39 @@ class Figure {
             }
         }
 
-        return targetPosition.some((coord) => this.field.state.get(coord));
+        const figureCollisionFound = targetPosition.some((coord) =>
+            this.field.state.get(coord)
+        );
+
+        return figureCollisionFound || fieldBorderCollisionFound;
+    }
+
+    private checkFieldBorderCollision(
+        direction: EDirection,
+        updatedCoordinates: Array<ICoordinate>
+    ) {
+        switch (direction) {
+            case EDirection.DOWN: {
+                return updatedCoordinates.some(({ y: y }) => y === 0);
+            }
+            case EDirection.LEFT: {
+                return updatedCoordinates.some(({ x: x }) => x === 0);
+            }
+            case EDirection.RIGHT: {
+                const largestYCoordinate = Math.max(
+                    ...Array.from(this.field.state.map.keys()).map(
+                        (coord_str) => {
+                            const [_x, y] = coord_str.split("_");
+                            return parseInt(y);
+                        }
+                    )
+                );
+
+                return updatedCoordinates.some(
+                    ({ x: x }) => x === largestYCoordinate
+                );
+            }
+        }
     }
 }
 
