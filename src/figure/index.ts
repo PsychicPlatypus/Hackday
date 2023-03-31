@@ -6,8 +6,8 @@ class Figure {
     coordinates: Array<ICoordinate>;
     field: Field;
 
-    constructor(coordinate: Array<ICoordinate>, field: Field) {
-        this.coordinates = coordinate;
+    constructor(coordinates: Array<ICoordinate>, field: Field) {
+        this.coordinates = coordinates;
         this.field = field;
     }
 

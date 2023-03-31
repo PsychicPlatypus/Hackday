@@ -3,9 +3,12 @@ import Field from "../field";
 import ICoordinate from "../coordinate";
 
 export function createSquare(field: Field) {
-    const startingXCoordinate = Math.floor(field.state.size / 2);
+    const startingXCoordinate = Math.floor(field.state.map.size / 2);
     const largestYCoordinate = Math.max(
-        ...Array.from(field.state.keys()).map((coord) => coord.y)
+        ...Array.from(field.state.map.keys()).map((coord_str) => {
+            const [_x, y] = coord_str.split("_");
+            return parseInt(y);
+        })
     );
     const coordinates: Array<ICoordinate> = [
         { x: startingXCoordinate, y: largestYCoordinate },
