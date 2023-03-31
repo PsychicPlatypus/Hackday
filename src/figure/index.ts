@@ -28,6 +28,7 @@ class Figure {
                     this.checkCollision(EDirection.DOWN)
                 ) {
                     this.field.update(this.coordinates);
+                    return false;
                 } else {
                     this.coordinates = updatedCoordinates;
                 }
