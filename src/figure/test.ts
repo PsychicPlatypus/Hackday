@@ -86,7 +86,9 @@ describe("Figure class", () => {
                     figurePlacementCoordinates,
                     testField
                 );
-                expect(figure.checkCollision()).toEqual(isCollisionExpected);
+                expect(figure.checkCollision(EDirection.DOWN)).toEqual(
+                    isCollisionExpected
+                );
             }
         );
     });
@@ -100,9 +102,9 @@ describe("Figure class", () => {
         [
             { yShift: 2, isCollisionExpected: false },
             { yShift: 1, isCollisionExpected: true },
-            // { yShift: 0, isCollisionExpected: true },
-            // { yShift: -1, isCollisionExpected: true },
-            // { yShift: -2, isCollisionExpected: false },
+            { yShift: 0, isCollisionExpected: true },
+            { yShift: -1, isCollisionExpected: true },
+            { yShift: -2, isCollisionExpected: false },
         ].forEach(
             ({ yShift: yShift, isCollisionExpected: isCollisionExpected }) => {
                 const testField = new Field(5, 20);
@@ -216,9 +218,9 @@ describe("Figure class", () => {
         [
             { yShift: 2, isCollisionExpected: false },
             { yShift: 1, isCollisionExpected: true },
-            // { yShift: 0, isCollisionExpected: true },
-            // { yShift: -1, isCollisionExpected: true },
-            // { yShift: -2, isCollisionExpected: false },
+            { yShift: 0, isCollisionExpected: true },
+            { yShift: -1, isCollisionExpected: true },
+            { yShift: -2, isCollisionExpected: false },
         ].forEach(
             ({ yShift: yShift, isCollisionExpected: isCollisionExpected }) => {
                 const testField = new Field(5, 20);

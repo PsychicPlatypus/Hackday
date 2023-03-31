@@ -13,55 +13,77 @@ class Figure {
 
     move(direction: EDirection) {
         switch (direction) {
-            case EDirection.DOWN:
-                if (this.checkCollision()) {
+            case EDirection.DOWN: {
+                if (this.checkCollision(EDirection.DOWN)) {
                     this.field.update(this.coordinates);
-                    return;
+                } else {
+                    this.coordinates = this.coordinates.map(
+                        ({ x: x, y: y }) => ({ x: x, y: y - 1 })
+                    );
                 }
-                this.coordinates.forEach((coord) => {
-                    coord.y = coord.y - 1;
-                });
-                break;
 
-            case EDirection.LEFT:
-                if (this.checkCollision()) {
+                return this.coordinates;
+            }
+
+            case EDirection.LEFT: {
+                if (this.checkCollision(EDirection.LEFT)) {
                     this.field.update(this.coordinates);
-                    return;
+                } else {
+                    this.coordinates = this.coordinates.map(
+                        ({ x: x, y: y }) => ({ x: x - 1, y: y })
+                    );
                 }
-                this.coordinates.forEach((coord) => {
-                    coord.x = coord.x - 1;
-                });
-                break;
 
-            case EDirection.RIGHT:
-                if (this.checkCollision()) {
-                    console.log("Here");
+                return this.coordinates;
+            }
+
+            case EDirection.RIGHT: {
+                if (this.checkCollision(EDirection.RIGHT)) {
                     this.field.update(this.coordinates);
-                    return;
+                } else {
+                    this.coordinates = this.coordinates.map(
+                        ({ x: x, y: y }) => ({ x: x + 1, y: y })
+                    );
                 }
-                this.coordinates.forEach((coord) => {
-                    coord.x = coord.x + 1;
-                });
-                break;
 
-            default:
-                break;
+                return this.coordinates;
+            }
         }
-        return this.coordinates;
     }
 
-    checkCollision() {
-        const underPosition: Array<ICoordinate> = this.coordinates.map(
-            (coord) => {
-                return { x: coord.x, y: coord.y - 1 };
+    checkCollision(direction: EDirection) {
+        let targetPosition: Array<ICoordinate> = this.coordinates;
+
+        switch (direction) {
+            case EDirection.DOWN: {
+                targetPosition = this.coordinates.map((coord) => ({
+                    x: coord.x,
+                    y: coord.y - 1,
+                }));
+
+                break;
             }
-        );
 
-        const res = underPosition.some((coord) => {
-            return this.field.state.get(coord);
-        });
+            case EDirection.LEFT: {
+                targetPosition = this.coordinates.map((coord) => ({
+                    x: coord.x - 1,
+                    y: coord.y,
+                }));
 
-        return res;
+                break;
+            }
+
+            case EDirection.RIGHT: {
+                targetPosition = this.coordinates.map((coord) => ({
+                    x: coord.x + 1,
+                    y: coord.y,
+                }));
+
+                break;
+            }
+        }
+
+        return targetPosition.some((coord) => this.field.state.get(coord));
     }
 }
 
