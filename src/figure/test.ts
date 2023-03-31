@@ -268,7 +268,7 @@ describe("Figure class", () => {
     });
 
     it("should not allow rightwards movement when the figure is at border", () => {
-        const figureCoordinates: Array<ICoordinate> = [{ x: 5, y: 20 }];
+        const figureCoordinates: Array<ICoordinate> = [{ x: 4, y: 19 }];
         const testField = new Field(5, 20);
 
         const figure = new Figure(figureCoordinates, testField);
@@ -278,7 +278,7 @@ describe("Figure class", () => {
     });
 
     it("should not allow leftwards movement when the figure is at border", () => {
-        const figureCoordinates: Array<ICoordinate> = [{ x: 0, y: 20 }];
+        const figureCoordinates: Array<ICoordinate> = [{ x: 0, y: 19 }];
         const testField = new Field(5, 20);
 
         const figure = new Figure(figureCoordinates, testField);

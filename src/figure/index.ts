@@ -15,17 +15,18 @@ class Figure {
         switch (direction) {
             case EDirection.DOWN: {
                 const updatedCoordinates = this.coordinates.map(
-                    ({ x: x, y: y }) => ({ x: x, y: y - 1 })
+                    ({ x: x, y: y }) => ({
+                        x: x,
+                        y: y - 1,
+                    })
                 );
-
                 if (
                     this.checkFieldBorderCollision(
                         EDirection.DOWN,
                         updatedCoordinates
-                    )
+                    ) ||
+                    this.checkCollision(EDirection.DOWN)
                 ) {
-                    return this.coordinates;
-                } else if (this.checkCollision(EDirection.DOWN)) {
                     this.field.update(this.coordinates);
                 } else {
                     this.coordinates = updatedCoordinates;
@@ -36,7 +37,10 @@ class Figure {
 
             case EDirection.LEFT: {
                 const updatedCoordinates = this.coordinates.map(
-                    ({ x: x, y: y }) => ({ x: x - 1, y: y })
+                    ({ x: x, y: y }) => ({
+                        x: x - 1,
+                        y: y,
+                    })
                 );
 
                 if (
@@ -57,7 +61,10 @@ class Figure {
 
             case EDirection.RIGHT: {
                 const updatedCoordinates = this.coordinates.map(
-                    ({ x: x, y: y }) => ({ x: x + 1, y: y })
+                    ({ x: x, y: y }) => ({
+                        x: x + 1,
+                        y: y,
+                    })
                 );
 
                 if (
@@ -84,8 +91,6 @@ class Figure {
 
         switch (direction) {
             case EDirection.DOWN: {
-                this.field;
-
                 targetPosition = this.coordinates.map((coord) => ({
                     x: coord.x,
                     y: coord.y - 1,
@@ -126,23 +131,23 @@ class Figure {
     ) {
         switch (direction) {
             case EDirection.DOWN: {
-                return updatedCoordinates.some(({ y: y }) => y === 0);
+                return updatedCoordinates.some(({ y: y }) => y === -1);
             }
             case EDirection.LEFT: {
-                return updatedCoordinates.some(({ x: x }) => x === 0);
+                return updatedCoordinates.some(({ x: x }) => x === -1);
             }
             case EDirection.RIGHT: {
-                const largestYCoordinate = Math.max(
+                const largestXCoordinate = Math.max(
                     ...Array.from(this.field.state.map.keys()).map(
                         (coord_str) => {
-                            const [_x, y] = coord_str.split("_");
-                            return parseInt(y);
+                            const [x, _y] = coord_str.split("_");
+                            return parseInt(x);
                         }
                     )
                 );
 
                 return updatedCoordinates.some(
-                    ({ x: x }) => x === largestYCoordinate
+                    ({ x: x }) => x === largestXCoordinate + 1
                 );
             }
         }
